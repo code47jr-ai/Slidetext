@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Slide Text</title>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #111827;
+      color: white;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 30px;
+    }
+
+    textarea {
+      width: 90%;
+      max-width: 600px;
+      height: 100px;
+      padding: 15px;
+      font-size: 18px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    button, select {
+      margin: 10px 4px;
+      padding: 12px 18px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+    }
+
+    button {
+      background: #22c55e;
+      color: white;
+    }
+
+    .screen {
+      width: 90%;
+      max-width: 700px;
+      height: 220px;
+      margin: 20px auto;
+      background: black;
+      border-radius: 15px;
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .slider {
+      position: absolute;
+      white-space: nowrap;
+      font-size: 40px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+  <h1>SLIDE TEXT</h1>
+
+  <textarea id="text" placeholder="Andika ujumbe wako..."></textarea>
+
+  <br>
+
+  <button onclick="startSlide()">▶ ANZA</button>
+  <button onclick="stopSlide()">■ SIMAMA</button>
+
+  <select id="direction">
+    <option value="left">← Kushoto</option>
+    <option value="right">→ Kulia</option>
+  </select>
+
+  <select id="speed">
+    <option value="1">Polepole</option>
+    <option value="2" selected>Kawaida</option>
+    <option value="4">Haraka</option>
+  </select>
+
+  <div class="screen" id="screen">
+    <div class="slider" id="slider">Karibu kwenye Slide Text</div>
+  </div>
+
+  <script>
+    let animation;
+
+    function startSlide() {
+      stopSlide();
+
+      const text = document.getElementById("text").value;
+      const slider = document.getElementById("slider");
+      const screen = document.getElementById("screen");
+      const direction = document.getElementById("direction").value;
+      const speed = Number(document.getElementById("speed").value);
+
+      slider.textContent = text || "Andika ujumbe wako...";
+
+      let position;
+
+      if (direction === "left") {
+        position = screen.offsetWidth;
+      } else {
+        position = -slider.offsetWidth;
+      }
+
+      function move() {
+        if (direction === "left") {
+          position -= speed;
+
+          if (position < -slider.offsetWidth) {
+            position = screen.offsetWidth;
+          }
+        } else {
+          position += speed;
+
+          if (position > screen.offsetWidth) {
+            position = -slider.offsetWidth;
+          }
+        }
+
+        slider.style.left = position + "px";
+        animation = requestAnimationFrame(move);
+      }
+
+      move();
+    }
+
+    function stopSlide() {
+      if (animation) {
+        cancelAnimationFrame(animation);
+      }
+    }
+  </script>
+
+</body>
+</html>
